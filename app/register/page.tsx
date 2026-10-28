@@ -1,0 +1,7 @@
+"use client";
+import { FormEvent, useState } from "react";
+export default function RegisterPage() {
+ const [form,setForm]=useState({name:"",email:"",phone:"",password:""}); const [message,setMessage]=useState(""); const [busy,setBusy]=useState(false);
+ async function submit(e:FormEvent){e.preventDefault();setBusy(true);setMessage("");try{const r=await fetch("/api/auth/register",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(form)});const d=await r.json();if(!r.ok)throw new Error(d.error||"Không đăng ký được.");setMessage("Đăng ký thành công. Hãy đăng nhập để tiếp tục.");}catch(e){setMessage(e instanceof Error?e.message:"Có lỗi xảy ra.");}finally{setBusy(false)}}
+ return <main className="auth-wrap"><form className="auth-card" onSubmit={submit}><a href="/" className="auth-brand">BCD KIDS</a><h1>Tạo tài khoản khách sỉ</h1><p>Đăng ký bằng thông tin doanh nghiệp/cửa hàng của bạn.</p>{([ ["name","Họ và tên","text"],["email","Email","email"],["phone","Số điện thoại","tel"],["password","Mật khẩu (ít nhất 10 ký tự)","password"]] as const).map(([key,label,type])=><label key={key}>{label}<input type={type} required minLength={key==="password"?10:undefined} autoComplete={key==="password"?"new-password":key} value={form[key]} onChange={e=>setForm({...form,[key]:e.target.value})}/></label>)}{message&&<p>{message}</p>}<button className="primary-button full" disabled={busy}>{busy?"Đang tạo tài khoản…":"Đăng ký"}</button><p>Đã có tài khoản? <a href="/login">Đăng nhập</a></p></form></main>
+}

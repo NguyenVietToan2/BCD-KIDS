@@ -1,0 +1,3 @@
+"use client";
+import { useEffect, useState } from "react";
+export default function PaymentResult(){const [status,setStatus]=useState("Đang kiểm tra kết quả thanh toán…");useEffect(()=>{const p=new URLSearchParams(window.location.search);setStatus(p.get("vnp_ResponseCode")==="00"?"VNPay đã trả về kết quả thành công. Đơn hàng sẽ được xác nhận sau khi máy chủ nhận được thông báo IPN hợp lệ.":"Thanh toán chưa thành công hoặc đã bị hủy. Nếu tiền đã bị trừ, vui lòng liên hệ bộ phận hỗ trợ.");},[]);return <main className="auth-wrap"><section className="auth-card"><h1>Kết quả thanh toán</h1><p>{status}</p><a className="primary-button" href="/">Về trang chủ</a></section></main>}
